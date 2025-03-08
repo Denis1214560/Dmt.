@@ -1,1 +1,437 @@
+<!DOCTYPE html>
+<html lang="ru">
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DMT</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    /* Общие стили */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(45deg, #FF6B6B, #6B8E23);
+      color: #fff;
+      line-height: 1.6;
+      transition: background 0.5s ease, color 0.5s ease;
+      min-height: 100vh;
+      background-size: cover;
+      overflow-x: hidden;
+    }
+
+    body.light-theme {
+      background: #f5f5f5;
+      color: #333;
+    }
+
+    body.dark-theme {
+      background: #222;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .dmt-title {
+      font-size: 4rem;
+      color: #fff;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      background: linear-gradient(90deg, #ff7e5f, #feb47b);
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 20px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .section {
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 30px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    .section.light-theme {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      color: #fff;
+      margin-bottom: 15px;
+    }
+
+    select,
+    textarea,
+    button,
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+      border-radius: 8px;
+    }
+
+    button {
+      background-color: #FF6B6B;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #FEB47B;
+    }
+
+    .menu {
+      position: fixed;
+      top: 0;
+      left: -250px;
+      width: 250px;
+      height: 100%;
+      background-color: #222;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: 4px 0 10px rgba(0, 0, 0, 0.8);
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .menu.open {
+      transform: translateX(250px);
+    }
+
+    .menu a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1rem;
+      padding: 10px;
+      background-color: #444;
+      border-radius: 8px;
+      transition: 0.3s ease;
+      text-align: center;
+    }
+
+    .menu a:hover {
+      background-color: #FEB47B;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background-color: #FF6B6B;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 1.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      border: none;
+      transition: 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+      background-color: #FEB47B;
+    }
+
+    .theme-toggle {
+      font-size: 2rem;
+    }
+
+    .theme-toggle:focus {
+      outline: none;
+    }
+
+    #time {
+      font-size: 1.5rem;
+      margin-top: 20px;
+    }
+
+    /* Стили для калькулятора */
+    .calculator {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      max-width: 400px;
+      margin: 0 auto;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    .calculator input {
+      grid-column: span 4;
+      height: 60px;
+      font-size: 2rem;
+      text-align: right;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      background-color: #333;
+      color: #fff;
+    }
+
+    .calculator button {
+      height: 70px;
+      font-size: 1.5rem;
+      border-radius: 10px;
+      border: 1px solid #333;
+      margin: 5px;
+      background-color: #FF6B6B;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .calculator button:hover {
+      background-color: #FEB47B;
+    }
+
+    .calculator .equal-btn {
+      background-color: #6B8E23;
+      grid-column: span 4;
+    }
+
+    .calculator .equal-btn:hover {
+      background-color: #FF6B6B;
+    }
+
+    /* Стили для крутой надписи и прав */
+    .footer {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      font-size: 1rem;
+      color: #fff;
+    }
+
+    .footer .copyright {
+      font-size: 1.2rem;
+      animation: fadeInUp 2s ease-in-out;
+    }
+
+    .footer .rights {
+      font-size: 1rem;
+      margin-top: 10px;
+      color: #FEB47B;
+      animation: fadeInUp 2s ease-in-out;
+      animation-delay: 0.5s;
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Переключение темной и светлой темы -->
+  <button class="theme-toggle" onclick="toggleTheme()">🌞</button>
+
+  <!-- Боковое меню -->
+  <button class="menu-toggle" onclick="toggleMenu()">Меню</button>
+
+  <div class="menu" id="menu">
+    <h3>Меню</h3>
+    <a href="#" onclick="openSection('notepad')">Блокнот</a>
+    <a href="#" onclick="openSection('translator')">Переводчик</a>
+    <a href="#" onclick="openSection('currency-converter')">Конвертер валют</a>
+    <a href="#" onclick="openSection('calculator')">Калькулятор</a>
+    <button class="menu-toggle" onclick="toggleMenu()">Закрыть меню</button>
+  </div>
+
+  <!-- Контейнер для контента -->
+  <div class="container">
+    <div class="dmt-title">DMT</div>
+
+    <!-- Время -->
+    <div id="clock" class="section" style="display: block;">
+      <h2>Текущее время</h2>
+      <div id="time"></div>
+    </div>
+
+    <!-- Блокнот -->
+    <div id="notepad" class="section" style="display: none;">
+      <h2>Блокнот</h2>
+      <textarea id="notepad-text" placeholder="Введите заметки..." rows="6"></textarea>
+      <button onclick="saveNote()">Сохранить заметку</button>
+    </div>
+
+    <!-- Переводчик -->
+    <div id="translator" class="section" style="display: none;">
+      <h2>Переводчик</h2>
+      <div style="display: flex; gap: 10px; justify-content: center;">
+        <select id="languageFrom" style="width: 150px;">
+          <option value="ru">Русский</option>
+          <option value="en">Английский</option>
+          <option value="uk">Украинский</option>
+        </select>
+        <select id="languageTo" style="width: 150px;">
+          <option value="ru">Русский</option>
+          <option value="en">Английский</option>
+          <option value="uk">Украинский</option>
+        </select>
+      </div>
+      <textarea id="inputText" placeholder="Введите текст для перевода" rows="4"></textarea>
+      <button id="translateBtn" onclick="translateText()">Перевести</button>
+      <textarea id="outputText" placeholder="Перевод" rows="4" disabled></textarea>
+    </div>
+
+    <!-- Конвертер валют -->
+    <div id="currency-converter" class="section" style="display: none;">
+      <h2>Конвертер валют</h2>
+      <input type="number" id="amount" placeholder="Сумма" />
+      <div style="display: flex; gap: 10px; justify-content: center;">
+        <select id="fromCurrency" style="width: 120px;">
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="RUB">RUB</option>
+        </select>
+        <select id="toCurrency" style="width: 120px;">
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="RUB">RUB</option>
+        </select>
+      </div>
+      <button onclick="convertCurrency()">Конвертировать</button>
+      <div id="conversionResult" style="font-size: 1.2rem; margin-top: 10px;"></div>
+    </div>
+
+    <!-- Калькулятор -->
+    <div id="calculator" class="section" style="display: none;">
+      <h2>Калькулятор</h2>
+      <div class="calculator">
+        <input type="text" id="calculatorDisplay" disabled />
+
+        <button onclick="appendToCalculator('7')">7</button>
+        <button onclick="appendToCalculator('8')">8</button>
+        <button onclick="appendToCalculator('9')">9</button>
+        <button onclick="appendToCalculator('/')">/</button>
+
+        <button onclick="appendToCalculator('4')">4</button>
+        <button onclick="appendToCalculator('5')">5</button>
+        <button onclick="appendToCalculator('6')">6</button>
+        <button onclick="appendToCalculator('*')">*</button>
+
+        <button onclick="appendToCalculator('1')">1</button>
+        <button onclick="appendToCalculator('2')">2</button>
+        <button onclick="appendToCalculator('3')">3</button>
+        <button onclick="appendToCalculator('-')">-</button>
+
+        <button onclick="appendToCalculator('0')">0</button>
+        <button onclick="appendToCalculator('.')">.</button>
+        <button onclick="clearCalculator()">C</button>
+        <button onclick="appendToCalculator('+')">+</button>
+
+        <button class="equal-btn" onclick="calculate()">=</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Подвал с авторскими правами -->
+  <div class="footer">
+    <div class="copyright">© 2025 DMT. Все права защищены.</div>
+    <div class="rights">Все права на DMT принадлежат владельцам.</div>
+  </div>
+
+  <!-- Скрипты для функционала -->
+  <script>
+    // Функции переключения темы
+    function toggleTheme() {
+      document.body.classList.toggle('dark-theme');
+      document.body.classList.toggle('light-theme');
+      const themeIcon = document.querySelector('.theme-toggle');
+      themeIcon.textContent = document.body.classList.contains('light-theme') ? '🌙' : '🌞';
+    }
+
+    // Обновление времени каждую секунду
+    function updateTime() {
+      const timeElement = document.getElementById('time');
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const seconds = now.getSeconds().toString().padStart(2, '0');
+      timeElement.textContent = `${hours}:${minutes}:${seconds}`;
+    }
+
+    setInterval(updateTime, 1000);
+    updateTime(); // Показать текущее время сразу
+
+    // Открытие секции
+    function openSection(sectionId) {
+      const sections = document.querySelectorAll('.section');
+      sections.forEach((section) => section.style.display = 'none');
+      document.getElementById(sectionId).style.display = 'block';
+
+      // Закрыть меню при переходе
+      document.getElementById('menu').classList.remove('open');
+    }
+
+    // Боковое меню
+    function toggleMenu() {
+      document.getElementById('menu').classList.toggle('open');
+    }
+
+    // Сохранение заметки
+    function saveNote() {
+      const noteText = document.getElementById('notepad-text').value;
+      if (noteText) {
+        localStorage.setItem('notepadNote', noteText);
+        alert('Заметка сохранена!');
+      } else {
+        alert('Пожалуйста, введите текст для заметки.');
+      }
+    }
+
+    // При загрузке страницы, загружаем сохраненную заметку
+    window.onload = function () {
+      const savedNote = localStorage.getItem('notepadNote');
+      if (savedNote) {
+        document.getElementById('notepad-text').value = savedNote;
+      }
+    }
+  </script>
+</body>
+
+</html>
